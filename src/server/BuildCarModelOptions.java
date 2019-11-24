@@ -1,46 +1,63 @@
 package server;
+import adapter.*;
 
-import adapter.BuildAuto;
-import model.Automotive;
+public class BuildCarModelOptions extends ProxyAutomotive {
 
-import java.util.Properties;
+    ////////// PROPERTIES //////////
 
-public class BuildCarModelOptions implements AutoServer{
-    private int request;
-    private static boolean DEBUG = false;
+    private static final int WAITING = 0;
+    private static final int REQUEST_BUILD_AUTO = 1;
+    private static final int REQUEST_CONFIGURE_AUTO = 2;
 
-    public String setRequest (int requestNum) {
-        this.request = requestNum;
-        switch (request) {
-            case 1:
-                return ("Enter filename for car: ");
-            case 2:
-                return ("Enter name of car to configure: ");
-            default: {
-                request = -1;
-                return ("Invalid option.");
-            }
+    private int state = WAITING;
+
+    ////////// CONSTRUCTORS //////////
+
+    public BuildCarModelOptions() {
+
+    }
+
+    ////////// INSTANCE METHODS //////////
+
+    public Object processRequest(Object obj) {
+        Object toClient = null;
+
+        if (state == REQUEST_BUILD_AUTO) {
+            //add code to buildauto
+            toClient = "Automobile object successfully added to database\n"
+                    + "Press any key to return to main menu";
         }
+        else if (state == REQUEST_CONFIGURE_AUTO) {
+            //add code for configureauto
+        }
+        else {
+
+        }
+
+        this.state = WAITING;
+
+        return toClient;
     }
 
-    public int getRequest() {
-        return request;
-    }
-    //TODO: FIX
-    public void addAuto(Automotive auto) {
-        BuildAuto bAuto = new BuildAuto();
-        bAuto.getAutoTemplate().addVehicle(auto.getName(), auto);
+    public String setRequest(int i) {
+        String output = null;
+
+        if (i == 1) {
+            this.state = REQUEST_BUILD_AUTO;
+            output = "Upload a file to create an Automotive";
+        }
+        else if (i == 2) {
+            this.state = REQUEST_CONFIGURE_AUTO;
+            output = "Select an Automotive from the following list to configure: \n";
+            super.printAutos();
+        }
+        else {
+            output = "Invalid request";
+        }
+
+        return output;
     }
 
-    //TODO: TO FIX
-    public String processRequest(Properties clientProps) {
-        String response = "";
-        return response;
-    }
 
-    //TODO: TO FIX
-    public String processRequest(int requestNum) {
-        String response = "";
-        return response;
-    }
+
 }

@@ -38,8 +38,7 @@ public class AutoTemplate<A extends Automotive> {
     //using keySet to print all keys
     public void printAllVehicles() {
         for (String autoKey: autoMap.keySet()) {
-            System.out.println("Printing all Vehicles");
-            System.out.println("[" + autoKey + "}");
+            System.out.println(autoKey);
         }
     }
 }

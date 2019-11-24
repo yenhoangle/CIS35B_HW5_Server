@@ -167,6 +167,8 @@ public class FileIO {
             baseprice = Float.parseFloat(props.getProperty("BasePrice"));
 
             auto = new Automotive(make, model, year, baseprice);
+            //loop through the prop files and add option set, option, op price
+            //TODO
             return auto;
 
         } catch (IOException ioe) {

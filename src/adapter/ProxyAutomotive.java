@@ -37,6 +37,11 @@ public abstract class ProxyAutomotive {
         at1.getVehicle(modelName).print();
     }
 
+    //prints names of autos in the LHS
+    public synchronized void printAutos() {
+        at1.printAllVehicles();
+    }
+
     //UpdateAuto interface methods via subclass BuildAuto
     public synchronized void updateOptionSetName(String key, String opsetName, String newOpsetName) {
         at1.getVehicle(key).updateOpsetName(opsetName, newOpsetName);
