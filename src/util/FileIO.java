@@ -164,7 +164,7 @@ public class FileIO {
             model = props.getProperty("Model");
             year = props.getProperty("Year");
             //need to convert to float
-            baseprice = Float.parseFloat(props.getProperty("Base Price"));
+            baseprice = Float.parseFloat(props.getProperty("BasePrice"));
 
             auto = new Automotive(make, model, year, baseprice);
             return auto;
