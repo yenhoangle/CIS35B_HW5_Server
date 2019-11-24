@@ -144,37 +144,44 @@ public class FileIO {
                 return buildAutoObject(filename);
             case 2:
                 //uses our new method to build from prop files
-                return buildFromPropData(filename);
+                return buildFromPropFile(filename);
             default:
                 throw new AutoException();
         }
     }
 
-    //TODO: finish
-    public Automotive buildFromPropData(String filename) throws AutoException {
-        String key, make, model, year;
-        float baseprice;
+
+    public Automotive buildFromPropFile(String filename) throws AutoException {
         Automotive auto;
         try {
+            //convert text file to Properties object
             FileInputStream fis = new FileInputStream((filename));
             Properties props = new Properties();
             props.load(fis);
-            //TODO: to fix
-            make = props.getProperty("Make");
-            model = props.getProperty("Model");
-            year = props.getProperty("Year");
-            //need to convert to float
-            baseprice = Float.parseFloat(props.getProperty("BasePrice"));
-
-            auto = new Automotive(make, model, year, baseprice);
-            //loop through the prop files and add option set, option, op price
-            //TODO
-            return auto;
+            auto = readPropData(props);
 
         } catch (IOException ioe) {
             throw new AutoException();
         }
+        return auto;
+    }
 
+    //TODO: finish
+    public Automotive readPropData(Properties props) {
+        String key, make, model, year;
+        float baseprice;
+        Automotive auto;
+        //TODO: to fix
+        make = props.getProperty("Make");
+        model = props.getProperty("Model");
+        year = props.getProperty("Year");
+        //need to convert to float
+        baseprice = Float.parseFloat(props.getProperty("BasePrice"));
+        auto = new Automotive(make, model, year, baseprice);
+        //loop through the prop files and add option set, option, op price
+        //TODO
+
+        return auto;
     }
 
     public void serialize(String filename, Automotive a1) throws AutoException {

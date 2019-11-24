@@ -42,6 +42,9 @@ public abstract class ProxyAutomotive {
         at1.printAllVehicles();
     }
 
+    //implements AutoServer methods
+    //add auto and get auto
+
     //UpdateAuto interface methods via subclass BuildAuto
     public synchronized void updateOptionSetName(String key, String opsetName, String newOpsetName) {
         at1.getVehicle(key).updateOpsetName(opsetName, newOpsetName);

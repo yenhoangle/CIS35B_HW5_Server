@@ -1,5 +1,8 @@
 package server;
 import adapter.*;
+import model.Automotive;
+
+import java.util.Properties;
 
 public class BuildCarModelOptions extends ProxyAutomotive {
 
@@ -19,11 +22,13 @@ public class BuildCarModelOptions extends ProxyAutomotive {
 
     ////////// INSTANCE METHODS //////////
 
-    public Object processRequest(Object obj) {
-        Object toClient = null;
+    public String processRequest(Properties prop) {
+        String toClient = null;
+        Automotive auto;
 
         if (state == REQUEST_BUILD_AUTO) {
             //add code to buildauto
+            //auto = buildAuto(props);
             toClient = "Automobile object successfully added to database\n"
                     + "Press any key to return to main menu";
         }
