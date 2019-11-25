@@ -171,16 +171,41 @@ public class FileIO {
         String key, make, model, year;
         float baseprice;
         Automotive auto;
-        //TODO: to fix
+
+        //for parsing props loop
+        int letter = 65; //ascii value of A
+        int counter = 1;
+        String optionSetNameKey, optionNameKey, optionPriceKey;
+
         make = props.getProperty("Make");
         model = props.getProperty("Model");
         year = props.getProperty("Year");
         //need to convert to float
         baseprice = Float.parseFloat(props.getProperty("BasePrice"));
         auto = new Automotive(make, model, year, baseprice);
-        //loop through the prop files and add option set, option, op price
-        //TODO
 
+        optionSetNameKey = "OptionSet" + (char)letter;
+
+        //loop through the prop files and add option set, option, op price
+        while(props.getProperty(optionSetNameKey) != null) {
+            String opsetName = props.getProperty(optionSetNameKey);
+            auto.addOpset(opsetName); //add the optionSet
+            optionNameKey = "Option" + (char) letter + counter; // hopefully this is OptionA1 and not OptionB
+            optionPriceKey = "OptionValue" + (char) letter + counter;
+
+            while(props.getProperty(optionNameKey) != null) {
+                String opName = props.getProperty(optionNameKey);
+                float opPrice = Float.parseFloat(props.getProperty(optionPriceKey));
+                auto.addOption(opsetName, opName, opPrice);
+                counter++;
+
+                optionNameKey = "Option" + (char) letter + counter; //get the next option keys
+                optionPriceKey = "OptionValue" + (char) letter + counter;
+            }
+            letter++;
+            optionSetNameKey = "OptionSet" + (char)letter; //get the next optionset key
+
+        }
         return auto;
     }
 

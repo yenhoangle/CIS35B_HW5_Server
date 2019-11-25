@@ -131,7 +131,6 @@ public class Automotive implements Serializable {
             optionSets.add(new OptionSet(name));
             return true;
         }
-        //do we have to do anything with choice here
         return false;
     }
 
@@ -140,6 +139,17 @@ public class Automotive implements Serializable {
             if (opsetIndex != -1) {
                 return optionSets.get(opsetIndex).addOption(opname, opPrice);
 
+            }
+        }
+        return false;
+    }
+
+    //added for proj 5
+    public synchronized boolean addOption(String opsetname, String opname, float opPrice) {
+        if (opname != null && opname != null) {
+            int opsetInt = findOpsetIndex(opsetname);
+            if ( opsetInt != -1) {
+                return optionSets.get(opsetInt).addOption(opname, opPrice);
             }
         }
         return false;
