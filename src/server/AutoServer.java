@@ -2,8 +2,9 @@ package server;
 
 import exception.AutoException;
 import model.Automotive;
+import java.util.Properties;
 
 public interface AutoServer {
-    public void addAuto(Automotive auto) throws AutoException;
-    public void getAuto(String autoname);
+    public void addAuto(Properties props) throws AutoException;
+    public Automotive getAuto(Properties props);
 }

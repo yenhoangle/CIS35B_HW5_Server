@@ -1,5 +1,6 @@
 package server;
 import adapter.*;
+import exception.AutoException;
 import model.Automotive;
 
 import java.util.Properties;
@@ -22,28 +23,34 @@ public class BuildCarModelOptions extends ProxyAutomotive {
 
     ////////// INSTANCE METHODS //////////
 
-    public String processRequest(Properties prop) {
-        String toClient = null;
+    public Object processRequest(Properties props) throws AutoException {
+        Object toClient = null;
         Automotive auto;
+        try {
 
-        if (state == REQUEST_BUILD_AUTO) {
-            //add code to buildauto
-            //auto = buildAuto(props);
-            toClient = "Automobile object successfully added to database\n"
-                    + "Press any key to return to main menu";
-        }
-        else if (state == REQUEST_CONFIGURE_AUTO) {
-            //add code for configureauto
-        }
-        else {
+            if (state == REQUEST_BUILD_AUTO) {
+                //build auto and add to database
+                addAuto(props);
+                toClient = "Automobile object successfully added to database\n"
+                        + "Press any key to return to main menu";
+            } else if (state == REQUEST_CONFIGURE_AUTO) {
+                //add code for configureauto
+                toClient = getAuto(props);
+            } else {
+                System.out.println("Cannot process request");
+            }
+
+            this.state = WAITING;
+        } catch (AutoException ae) {
 
         }
-
-        this.state = WAITING;
 
         return toClient;
     }
 
+    public int getRequest() {
+        return state;
+    }
     public String setRequest(int i) {
         String output = null;
 
@@ -62,7 +69,4 @@ public class BuildCarModelOptions extends ProxyAutomotive {
 
         return output;
     }
-
-
-
 }

@@ -4,23 +4,19 @@ import java.net.*;
 import java.io.*;
 import java.util.Properties;
 import adapter.*;
+import exception.AutoException;
 import model.*;
 
-public class DefaultSocketClient extends Thread  {
+public class DefaultSocketClient extends Thread {
+
 
     ////////// PROPERTIES //////////
 
-
-    private static final boolean DEBUG = false;
-    private static final int WAITING = 0;
-    private static final int SENTFIRSTMENU = 1;
-    private static final int REQUESTSET = 2;
-
-    private int state = WAITING;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private Socket clientSocket;
     private BuildCarModelOptions protocol;
+    private boolean DEBUG=false;
 
     ////////// CONSTRUCTORS //////////
 
@@ -50,57 +46,24 @@ public class DefaultSocketClient extends Thread  {
 
         try {
             do {
+                if (DEBUG)
+                    System.out.println("Sending client interaction choices ... ");
+                sendOutput(menu);
 
-                if (state == WAITING) {
-                    if (DEBUG)
-                        System.out.println("Sending client interaction choices ... ");
-                    state = SENTFIRSTMENU;
-                    sendOutput(menu);
+                if (DEBUG)
+                    System.out.println("Reading client request ... ");
+                int request = Integer.parseInt(in.readObject().toString());
+                if (DEBUG)
+                    System.out.println(request);
+                if (request == 0)
+                    break;
 
-                }
+                if (DEBUG)
+                    System.out.println("Sending client request follow-up ... ");
+                sendOutput(protocol.setRequest(request));
 
-                if (state == SENTFIRSTMENU) {
-                    int request;
-                    if (DEBUG)
-                        System.out.println("Reading client request ... ");
-                    try {
-                        request = Integer.parseInt(in.readObject().toString());
-                    }
-                    catch (Exception e){
-                        request = -1;
-                        state=WAITING;
-                        String response="Invalid menu choice. Press any key to continue.";
-                        sendOutput(response);
-                    }
-                    if (DEBUG)
-                        System.out.println(request);
-                    if (request == 0)
-                        break;
-                    //tests for invalid menu choice
-                    if (request <0 || request > 2){
-                        state=WAITING;
-                        String response="Invalid menu choice. Press any key to continue";
-                        sendOutput(response);
-                    }
-                    else {
-                        if (DEBUG) {
-                            System.out.println("Sending client request follow-up ... ");
-                            System.out.println(protocol.setRequest(request));
-                        }
-                        state=REQUESTSET;
-                        sendOutput(protocol.setRequest(request));
-                    }
-                }
-                if (state == REQUESTSET) {
-                    if (DEBUG)
-                        System.out.println("Sent request");
-                    int request = protocol.getRequest();
-                    if (request >= 1 && request <= 2)
-                        handleInput(request);
-                    else
-                        state=WAITING;
-                }
-
+                if (request >= 1 && request <= 2)
+                    handleInput(request);
 
             } while (in.readObject() != null);
 
@@ -109,7 +72,7 @@ public class DefaultSocketClient extends Thread  {
             in.close();
         }
         catch (IOException e) {
-            System.err.println("Error handling client connection ... " + e.getMessage());
+            System.err.println("Error handling client connection ... ");
             System.exit(1);
         }
         catch (ClassNotFoundException e) {
@@ -120,17 +83,16 @@ public class DefaultSocketClient extends Thread  {
 
     public void sendOutput(Object obj) {
         try {
-            out.flush();
             out.writeObject(obj);
         }
         catch (IOException e) {
-            System.err.println("Error returning output to client ...  "+ e.getMessage());
+            System.err.println("Error returning output to client ... ");
             System.exit(1);
         }
     }
 
     public void handleInput(int request) {
-        //Object fromClient = null;
+        Object fromClient = null;
         Object toClient = null;
 
         try {
@@ -138,55 +100,38 @@ public class DefaultSocketClient extends Thread  {
                 case 1: //Client request to build Automobile
                     if (DEBUG)
                         System.out.println("Waiting for client to upload file ... ");
-                    try {
-                        Properties fromClient = (Properties)in.readObject();
-                        toClient = (String)protocol.processRequest(fromClient);
-                        if (DEBUG) {
-                            System.out.println("Adding new Automobile to database ... ");
-                        }
+                    fromClient = in.readObject();
+                    if (DEBUG) {
+                        System.out.println(fromClient);
+                        System.out.println("Adding new Automobile to database ... ");
                     }
-                    catch (Exception e) {
-                        toClient ="There was a problem with your upload. Please try again.  Press any key to continue.";
-
-                    }
-                    finally {
-                        state=WAITING;
-                        sendOutput(toClient);
-                    }
+                    toClient = protocol.processRequest((Properties)fromClient);
+                    sendOutput(toClient);
                     break;
 
                 case 2: //Client request to configure Automobile
                     if (DEBUG)
                         System.out.println("Waiting for client to select Automobile ... ");
-                    //String fromClientInt = in.readObject().toString();
-                    int fromClientInt = in.readInt();
+                    fromClient = Integer.parseInt(in.readObject().toString());
                     if (DEBUG)
                         System.out.println("Sending Automobile object to client ... ");
-                    toClient = protocol.processRequest(fromClientInt);
-                    state=WAITING;
-                    if (toClient ==null) {
-                        toClient="Not able to find your vehicle. Please press any key to continue.";
-                    }
+                    toClient = protocol.processRequest((Properties)fromClient);
                     sendOutput(toClient);
                     break;
 
                 default: //Invalid requests
-                    state=WAITING;
-                    toClient="Invalid request.";
-                    sendOutput(toClient);
-                    break;
-
+                    ;
             }
         }
-        //TODO: uncomment when thrown
-        /*
         catch (ClassNotFoundException e) {
             System.err.println("Error in uploaded object, file may be corrupted ... ");
             System.exit(1);
-        } */
+        }
         catch (IOException e) {
             System.err.println("Error in retrieving object from client ... ");
             System.exit(1);
+        } catch (AutoException ae) {
+
         }
     }
 

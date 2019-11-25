@@ -9,8 +9,10 @@
 
 package adapter;
 import scale.EditThread;
+import server.AutoServer;
 
-public class BuildAuto extends ProxyAutomotive implements CreateAuto, UpdateAuto, FixAuto, ConfigureAuto, EditThread {
+public class BuildAuto extends ProxyAutomotive implements CreateAuto, UpdateAuto, FixAuto, ConfigureAuto, EditThread,
+        AutoServer {
     //remains empty
 }
 

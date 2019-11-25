@@ -35,10 +35,10 @@ public class AutoTemplate<A extends Automotive> {
         autoMap.remove(key);
     }
 
-    //using keySet to print all keys
+    //using keySet to print all vehicle names
     public void printAllVehicles() {
         for (String autoKey: autoMap.keySet()) {
-            System.out.println(autoKey);
+            System.out.println(getVehicle(autoKey).getName());
         }
     }
 }
