@@ -31,7 +31,7 @@ public class BuildCarModelOptions extends ProxyAutomotive {
             if (state == REQUEST_BUILD_AUTO) {
                 //build auto and add to database
                 addAuto(props);
-                toClient = "Automobile object successfully added to database\n"
+                toClient = "Automotive object successfully added to database\n"
                         + "Press any key to return to main menu";
             } else if (state == REQUEST_CONFIGURE_AUTO) {
                 //add code for configureauto

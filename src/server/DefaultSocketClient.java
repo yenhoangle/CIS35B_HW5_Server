@@ -40,8 +40,8 @@ public class DefaultSocketClient extends Thread {
 
 
         protocol = new BuildCarModelOptions();
-        String menu = "\nEnter 1 to upload a new Automobile\n"
-                + "Enter 2 to configure an Automobile\n"
+        String menu = "\nEnter 1 to upload a new Automotive\n"
+                + "Enter 2 to configure an Automotive\n"
                 + "Enter 0 to terminate connection\n";
 
         try {
@@ -103,7 +103,7 @@ public class DefaultSocketClient extends Thread {
                     fromClient = in.readObject();
                     if (DEBUG) {
                         System.out.println(fromClient);
-                        System.out.println("Adding new Automobile to database ... ");
+                        System.out.println("Adding new Automotive to database ... ");
                     }
                     toClient = protocol.processRequest((Properties)fromClient);
                     sendOutput(toClient);
@@ -111,10 +111,10 @@ public class DefaultSocketClient extends Thread {
 
                 case 2: //Client request to configure Automobile
                     if (DEBUG)
-                        System.out.println("Waiting for client to select Automobile ... ");
+                        System.out.println("Waiting for client to select Automotive ... ");
                     fromClient = Integer.parseInt(in.readObject().toString());
                     if (DEBUG)
-                        System.out.println("Sending Automobile object to client ... ");
+                        System.out.println("Sending Automotive object to client ... ");
                     toClient = protocol.processRequest((Properties)fromClient);
                     sendOutput(toClient);
                     break;
