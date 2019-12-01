@@ -7,6 +7,7 @@ import model.Automotive;
 import model.OptionSet;
 
 public class FileIO {
+    int filetype;
     public Automotive buildAutoObject(String filename) throws  AutoException {
         try {
             try {
@@ -139,6 +140,7 @@ public class FileIO {
 
     //new buildAutoObject method to accommodate prop files
     public Automotive buildAutoObject(String filename, int filetype) throws AutoException {
+        this.filetype = filetype;
         switch(filetype) {
             case 1:
                 return buildAutoObject(filename);
@@ -152,13 +154,14 @@ public class FileIO {
 
 
     public Automotive buildFromPropFile(String filename) throws AutoException {
+        filetype = 2;
         Automotive auto;
         try {
             //convert text file to Properties object
             FileInputStream fis = new FileInputStream((filename));
             Properties props = new Properties();
             props.load(fis);
-            auto = readPropData(props);
+            auto = buildAutoObject(props);
 
         } catch (IOException ioe) {
             throw new AutoException();
@@ -166,50 +169,73 @@ public class FileIO {
         return auto;
     }
 
-    //TODO: finish
-    public Automotive readPropData(Properties props) throws AutoException {
+    public Automotive buildAutoObject(Object propString) {
         Automotive auto;
-        try {
-            String key, make, model, year;
-            float baseprice;
+        Properties props = (Properties) propString;
+
+        String key, make, model, year;
+        float baseprice;
 
 
-            //for parsing props loop
-            int letter = 65; //ascii value of A
-            int counter = 1;
-            String optionSetNameKey, optionNameKey, optionPriceKey;
+        //for parsing props loop
+        int letter = 65; //ascii value of A
+        int counter = 1;
+        String optionSetNameKey, optionNameKey, optionPriceKey;
 
-            make = props.getProperty("Make");
-            model = props.getProperty("Model");
-            year = props.getProperty("Year");
-            //need to convert to float
-            baseprice = Float.parseFloat(props.getProperty("BasePrice"));
-            auto = new Automotive(make, model, year, baseprice);
+        make = props.getProperty("Make");
+        model = props.getProperty("Model");
+        year = props.getProperty("Year");
+        //need to convert to float
+        baseprice = Float.parseFloat(props.getProperty("Baseprice"));
+        auto = new Automotive(make, model, year, baseprice);
 
-            optionSetNameKey = "OptionSet" + (char) letter;
-            //loop through the prop files and add option set, option, op price
-            while (props.getProperty(optionSetNameKey) != null) {
-                String opsetName = props.getProperty(optionSetNameKey);
-                auto.addOpset(opsetName); //add the optionSet
-                optionNameKey = "Option" + ((char) letter) + counter; // hopefully this is OptionA1 and not OptionB
+        optionSetNameKey = "OptionSet" + (char) letter;
+        //loop through the prop files and add option set, option, op price
+        while (props.getProperty(optionSetNameKey) != null) {
+            String opsetName = props.getProperty(optionSetNameKey);
+            auto.addOpset(opsetName); //add the optionSet
+            optionNameKey = "Option" + ((char) letter) + counter; // hopefully this is OptionA1 and not OptionB
+            optionPriceKey = "OptionValue" + ((char) letter) + counter;
+
+            while (props.getProperty(optionNameKey) != null) {
+                String opName = props.getProperty(optionNameKey);
+                float opPrice = Float.parseFloat(props.getProperty(optionPriceKey));
+                auto.addOption(opsetName, opName, opPrice);
+                counter++;
+
+                optionNameKey = "Option" + ((char) letter) + counter; //get the next option keys
                 optionPriceKey = "OptionValue" + ((char) letter) + counter;
-
-                while (props.getProperty(optionNameKey) != null) {
-                    String opName = props.getProperty(optionNameKey);
-                    float opPrice = Float.parseFloat(props.getProperty(optionPriceKey));
-                    auto.addOption(opsetName, opName, opPrice);
-                    counter++;
-
-                    optionNameKey = "Option" + ((char) letter) + counter; //get the next option keys
-                    optionPriceKey = "OptionValue" + ((char) letter) + counter;
-                }
-                letter++;
-                optionSetNameKey = "OptionSet" + (char) letter; //get the next optionset key
             }
-        } catch (Exception e) {
-            throw new AutoException();
+            letter++;
+            optionSetNameKey = "OptionSet" + (char) letter; //get the next optionset key
         }
         return auto;
+
+    }
+
+
+
+    //not a requirement to parse a file content into a auto
+    public Automotive buildFromTextContent(Object fileString) {
+        String fString = (String) fileString;
+        Automotive builtAuto;
+        String fname = "C:\\Users\\Arteh\\IdeaProjects\\CIS35B_HW3\\textfiles\\sentAuto.txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fname));
+            writer.write(fString);
+            builtAuto = buildAutoObject(fname);
+            return builtAuto;
+
+        } catch (IOException io) {
+
+        } catch (AutoException ae) {
+
+        }
+        return null;
+    }
+
+    public int getFileType() {
+        return filetype;
     }
 
     public void serialize(String filename, Automotive a1) throws AutoException {

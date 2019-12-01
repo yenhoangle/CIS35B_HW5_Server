@@ -44,7 +44,8 @@ public abstract class ProxyAutomotive {
 
     public void buildAuto(Properties props) throws AutoException {
         FileIO fileIO = new FileIO();
-        Automotive toBuild = fileIO.readPropData(props);
+        Automotive toBuild = fileIO.buildAutoObject(props);
+
         at1.addVehicle(toBuild.getName(), toBuild); //also add a1 to the hash map
     }
 
@@ -66,9 +67,20 @@ public abstract class ProxyAutomotive {
         String key = make + " " + model + " " + year;
         return getAutoTemplate().getVehicle(key);
     }
+
+    public void addAuto(Object input){
+        FileIO fileIO = new FileIO();
+        Automotive toAdd = fileIO.buildAutoObject(input);
+        at1.addVehicle(toAdd.getName(), toAdd);
+    }
+
     //borrowing implementation of CreateAuto's method
-    public void addAuto(Properties props) throws AutoException {
-        buildAuto(props);
+    public void listAutos() {
+        printAutos();
+    }
+
+    public Automotive getAuto(String name) {
+        return at1.getVehicle(name);
     }
 
     //implements UpdateAuto interface methods via subclass BuildAuto---------------------------

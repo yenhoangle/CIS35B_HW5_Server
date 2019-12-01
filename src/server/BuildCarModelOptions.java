@@ -1,11 +1,9 @@
 package server;
 import adapter.*;
 import exception.AutoException;
-import model.Automotive;
-
-import java.util.Properties;
 
 public class BuildCarModelOptions extends ProxyAutomotive {
+    boolean DEBUG = true;
 
     ////////// PROPERTIES //////////
 
@@ -23,28 +21,38 @@ public class BuildCarModelOptions extends ProxyAutomotive {
 
     ////////// INSTANCE METHODS //////////
 
-    public Object processRequest(Properties props) throws AutoException {
+    public Object processRequest(Object obj) {
         Object toClient = null;
-        Automotive auto;
-        try {
+        String objString;
+        int filetype = 0;
+            objString = obj.toString();
 
             if (state == REQUEST_BUILD_AUTO) {
-                //build auto and add to database
-                addAuto(props);
+                //set file type
+                if (objString.contains(":")) {
+                    filetype = 1;
+                }
+                if (objString.contains("=")) {
+                    filetype = 2;
+                }
+
+                if (DEBUG) {
+                    System.out.println("Set file type to be: " + filetype);
+                }
+
+                //build auto and add to database - atm: prop file only
+                addAuto(obj);
                 toClient = "Automotive object successfully added to database\n"
                         + "Press any key to return to main menu";
+
             } else if (state == REQUEST_CONFIGURE_AUTO) {
                 //add code for configureauto
-                toClient = getAuto(props);
+                toClient = getAuto(objString);
             } else {
                 System.out.println("Cannot process request");
             }
 
             this.state = WAITING;
-        } catch (AutoException ae) {
-
-        }
-
         return toClient;
     }
 

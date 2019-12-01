@@ -11,7 +11,7 @@ public class DefaultServerSocket extends Thread  {
 
     private int port;
     private ServerSocket server;
-    private boolean DEBUG=false;
+    private boolean DEBUG=true;
 
     ////////// CONSTRUCTORS //////////
 

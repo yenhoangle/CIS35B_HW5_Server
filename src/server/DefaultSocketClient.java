@@ -16,7 +16,7 @@ public class DefaultSocketClient extends Thread {
     private ObjectInputStream in;
     private Socket clientSocket;
     private BuildCarModelOptions protocol;
-    private boolean DEBUG=false;
+    private boolean DEBUG=true;
 
     ////////// CONSTRUCTORS //////////
 
@@ -94,10 +94,9 @@ public class DefaultSocketClient extends Thread {
     public void handleInput(int request) {
         Object fromClient = null;
         Object toClient = null;
-
         try {
             switch (request) {
-                case 1: //Client request to build Automobile
+                case 1: //Client request to build Automotive
                     if (DEBUG)
                         System.out.println("Waiting for client to upload file ... ");
                     fromClient = in.readObject();
@@ -105,7 +104,10 @@ public class DefaultSocketClient extends Thread {
                         System.out.println(fromClient);
                         System.out.println("Adding new Automotive to database ... ");
                     }
-                    toClient = protocol.processRequest((Properties)fromClient);
+                    toClient = protocol.processRequest(fromClient);
+                    if (DEBUG) {
+                        System.out.println("Sending back to client:" + toClient);
+                    }
                     sendOutput(toClient);
                     break;
 
@@ -115,22 +117,19 @@ public class DefaultSocketClient extends Thread {
                     fromClient = Integer.parseInt(in.readObject().toString());
                     if (DEBUG)
                         System.out.println("Sending Automotive object to client ... ");
-                    toClient = protocol.processRequest((Properties)fromClient);
+                    toClient = protocol.processRequest(fromClient);
                     sendOutput(toClient);
                     break;
 
                 default: //Invalid requests
                     ;
             }
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.err.println("Error in uploaded object, file may be corrupted ... ");
             System.exit(1);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Error in retrieving object from client ... ");
             System.exit(1);
-        } catch (AutoException ae) {
 
         }
     }
