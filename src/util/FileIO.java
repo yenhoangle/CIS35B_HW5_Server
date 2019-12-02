@@ -207,6 +207,7 @@ public class FileIO {
                 optionPriceKey = "OptionValue" + ((char) letter) + counter;
             }
             letter++;
+            counter = 1; //reset counter for next option set
             optionSetNameKey = "OptionSet" + (char) letter; //get the next optionset key
         }
         return auto;
