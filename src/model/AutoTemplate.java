@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
 //need to change this into generics
-public class AutoTemplate<A extends Automotive> {
+public class AutoTemplate<A extends Automotive> implements Serializable {
     private LinkedHashMap<String, A> autoMap;
 
     public AutoTemplate() {
