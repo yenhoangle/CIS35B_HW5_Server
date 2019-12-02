@@ -60,18 +60,22 @@ public abstract class ProxyAutomotive {
     }
 
     //implements AutoServer interface methods via subclass BuildAuto---------------------------
-    public Automotive getAuto(Properties props) {
-        String make = props.getProperty("Make");
-        String model = props.getProperty("Model");
-        String year = props.getProperty("Year");
-        String key = make + " " + model + " " + year;
+    public Automotive getAuto(Object received) {
+        String key = (String) received;
         return getAutoTemplate().getVehicle(key);
     }
 
-    public void addAuto(Object input){
+    public void addAuto(Object input, int type){
         FileIO fileIO = new FileIO();
-        Automotive toAdd = fileIO.buildAutoObject(input);
-        at1.addVehicle(toAdd.getName(), toAdd);
+        Automotive toAdd;
+        if (type == 1) { //input is content of a text file
+            toAdd = fileIO.buildFromTextContent(input);
+            at1.addVehicle(toAdd.getName(), toAdd);
+        }
+        if (type == 2) { //input is content of prop file
+            toAdd = fileIO.buildAutoObject(input);
+            at1.addVehicle(toAdd.getName(), toAdd);
+        }
     }
 
     //borrowing implementation of CreateAuto's method

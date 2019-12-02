@@ -37,11 +37,11 @@ public class BuildCarModelOptions extends ProxyAutomotive {
                 }
 
                 if (DEBUG) {
-                    System.out.println("Set file type to be: " + filetype);
+                    System.out.println("Found file type to be: " + filetype);
                 }
 
                 //build auto and add to database - atm: prop file only
-                addAuto(obj);
+                addAuto(obj, filetype);
                 toClient = "Automotive object successfully added to database\n"
                         + "Press any key to return to main menu";
 

@@ -114,7 +114,7 @@ public class DefaultSocketClient extends Thread {
                 case 2: //Client request to configure Automobile
                     if (DEBUG)
                         System.out.println("Waiting for client to select Automotive ... ");
-                    fromClient = Integer.parseInt(in.readObject().toString());
+                    fromClient = in.readObject().toString();
                     if (DEBUG)
                         System.out.println("Sending Automotive object to client ... ");
                     toClient = protocol.processRequest(fromClient);
