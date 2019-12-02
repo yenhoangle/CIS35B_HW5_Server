@@ -216,10 +216,10 @@ public class FileIO {
 
 
     //not a requirement to parse a file content into a auto
-    public Automotive buildFromTextContent(Object fileString) {
-        String fString = (String) fileString;
+    public Automotive buildFromTextContent(Object fileStringBuffer) {
+        String fString = fileStringBuffer.toString();
         Automotive builtAuto;
-        String fname = "C:\\Users\\Arteh\\IdeaProjects\\CIS35B_HW3\\textfiles\\sentAuto.txt";
+        String fname = "C:\\Users\\Arteh\\IdeaProjects\\CIS35B_HW5_Server\\textfiles\\sentAuto.txt";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fname));
             writer.write(fString);

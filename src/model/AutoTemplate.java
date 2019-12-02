@@ -41,4 +41,12 @@ public class AutoTemplate<A extends Automotive> {
             System.out.println(getVehicle(autoKey).getName());
         }
     }
+
+    public String getVehiclesString() {
+        StringBuilder sb = new StringBuilder();
+        for (String autoKey : autoMap.keySet()) {
+            sb.append(autoKey + "\n");
+        }
+        return sb.toString();
+    }
 }

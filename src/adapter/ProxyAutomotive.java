@@ -78,10 +78,10 @@ public abstract class ProxyAutomotive {
         }
     }
 
-    //borrowing implementation of CreateAuto's method
-    public void listAutos() {
-        printAutos();
+    public String listAutos() {
+       return getAutoTemplate().getVehiclesString();
     }
+
 
     public Automotive getAuto(String name) {
         return at1.getVehicle(name);

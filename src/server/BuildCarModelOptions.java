@@ -1,6 +1,7 @@
 package server;
 import adapter.*;
 import exception.AutoException;
+import model.Automotive;
 
 public class BuildCarModelOptions extends ProxyAutomotive {
     boolean DEBUG = true;
@@ -35,7 +36,7 @@ public class BuildCarModelOptions extends ProxyAutomotive {
                 if (objString.contains("=")) {
                     filetype = 2;
                 }
-
+                //ADDED
                 if (DEBUG) {
                     System.out.println("Found file type to be: " + filetype);
                 }
@@ -46,8 +47,16 @@ public class BuildCarModelOptions extends ProxyAutomotive {
                         + "Press any key to return to main menu";
 
             } else if (state == REQUEST_CONFIGURE_AUTO) {
-                //add code for configureauto
+                //code for configureauto
+                //ADDED
+                if (DEBUG) {
+                    System.out.println("Fetching Auto with objString: " + objString);
+                }
                 toClient = getAuto(objString);
+                //ADDED
+                if (DEBUG) {
+                    System.out.println("Done fetching Auto: " + getAuto(objString).getName());
+                }
             } else {
                 System.out.println("Cannot process request");
             }
@@ -59,6 +68,7 @@ public class BuildCarModelOptions extends ProxyAutomotive {
     public int getRequest() {
         return state;
     }
+
     public String setRequest(int i) {
         String output = null;
 
@@ -68,8 +78,7 @@ public class BuildCarModelOptions extends ProxyAutomotive {
         }
         else if (i == 2) {
             this.state = REQUEST_CONFIGURE_AUTO;
-            output = "Select an Automotive from the following list to configure: \n";
-            super.printAutos();
+            output = "Select an Automotive from the following list to configure: \n" + listAutos();
         }
         else {
             output = "Invalid request";

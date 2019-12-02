@@ -106,7 +106,7 @@ public class DefaultSocketClient extends Thread {
                     }
                     toClient = protocol.processRequest(fromClient);
                     if (DEBUG) {
-                        System.out.println("Sending back to client:" + toClient);
+                        System.out.println("Sending back to client: " + toClient);
                     }
                     sendOutput(toClient);
                     break;
@@ -118,7 +118,15 @@ public class DefaultSocketClient extends Thread {
                     if (DEBUG)
                         System.out.println("Sending Automotive object to client ... ");
                     toClient = protocol.processRequest(fromClient);
+                    //ADDED
+                    if (DEBUG) {
+                        System.out.println("Sending back to client: " + toClient);
+                    }
                     sendOutput(toClient);
+                    //ADDED
+                    if (DEBUG) {
+                        System.out.println("Sent back to client: " + toClient);
+                    }
                     break;
 
                 default: //Invalid requests
