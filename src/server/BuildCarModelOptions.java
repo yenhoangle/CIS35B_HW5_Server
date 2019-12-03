@@ -1,7 +1,14 @@
+/*
+ * Yen Le
+ * 20123455
+ *
+ * BuildCarModelOptions.java
+ * Class which processes requests from the client in regarding to building an Automotive object and configuring an
+ * Automotive object
+ * */
+
 package server;
 import adapter.*;
-import exception.AutoException;
-import model.Automotive;
 
 public class BuildCarModelOptions extends ProxyAutomotive {
     boolean DEBUG = true;
@@ -36,10 +43,6 @@ public class BuildCarModelOptions extends ProxyAutomotive {
                 if (objString.contains("=")) {
                     filetype = 2;
                 }
-                //ADDED
-                if (DEBUG) {
-                    System.out.println("Found file type to be: " + filetype);
-                }
 
                 //build auto and add to database - atm: prop file only
                 addAuto(obj, filetype);
@@ -48,15 +51,8 @@ public class BuildCarModelOptions extends ProxyAutomotive {
 
             } else if (state == REQUEST_CONFIGURE_AUTO) {
                 //code for configureauto
-                //ADDED
-                if (DEBUG) {
-                    System.out.println("Fetching Auto with objString: " + objString);
-                }
                 toClient = getAuto(objString);
-                //ADDED
-                if (DEBUG) {
-                    System.out.println("Done fetching Auto: " + getAuto(objString).getName());
-                }
+
             } else {
                 System.out.println("Cannot process request");
             }

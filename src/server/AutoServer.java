@@ -1,9 +1,13 @@
+/*
+ * Yen Le
+ * 20123455
+ *
+ * AutoServer.java
+ * Interface which declares server methods
+ * */
+
 package server;
-
-import exception.AutoException;
 import model.Automotive;
-import java.util.Properties;
-
 public interface AutoServer {
     public Automotive getAuto(Object received);
     public String listAutos();

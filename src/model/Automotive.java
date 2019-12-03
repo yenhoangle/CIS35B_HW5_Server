@@ -6,7 +6,7 @@ import java.util.Scanner;
 import model.*;
 
 public class Automotive implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //to keep consistency in serialization / deserialization
     //separate variables to hold make and model, make + model = full name
     private String make;
     private String model;
@@ -245,7 +245,7 @@ public class Automotive implements Serializable {
             boolean done = false;
             while(!done) {
                 String opsetName = getOpSetName(i);
-                System.out.println("Please enter choice for " + opsetName);
+                System.out.println("Please enter choice for " + opsetName +": ");
                 String opNameChosen = scanner.nextLine().trim();
                 //search optionset for option choice with name to check validity
                 Option chosen = findOption(opsetName, opNameChosen);

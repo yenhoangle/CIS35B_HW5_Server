@@ -1,7 +1,11 @@
-//this file sets up the server, receives the port info and sets up the socket
+/*
+ * Yen Le
+ * 20123455
+ *
+ * DefaultServerSocket.java
+ * Class which sets up the server, receives the port information, and sets up the socket.
+ * */
 package server;
-import model.*;
-import adapter.*;
 import java.io.*;
 import java.net.*;
 

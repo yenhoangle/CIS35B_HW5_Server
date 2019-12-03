@@ -1,11 +1,15 @@
-package server;
+/*
+ * Yen Le
+ * 20123455
+ *
+ * DefaultSocketClient.java
+ * Class which handles input from the client and sends objects back to the client.
+ * */
 
+package server;
 import java.net.*;
 import java.io.*;
-import java.util.Properties;
-import adapter.*;
-import exception.AutoException;
-import model.*;
+
 
 public class DefaultSocketClient extends Thread {
 
@@ -92,8 +96,8 @@ public class DefaultSocketClient extends Thread {
     }
 
     public void handleInput(int request) {
-        Object fromClient = null;
-        Object toClient = null;
+        Object fromClient;
+        Object toClient;
         try {
             switch (request) {
                 case 1: //Client request to build Automotive
@@ -118,15 +122,7 @@ public class DefaultSocketClient extends Thread {
                     if (DEBUG)
                         System.out.println("Sending Automotive object to client ... ");
                     toClient = protocol.processRequest(fromClient);
-                    //ADDED
-                    if (DEBUG) {
-                        System.out.println("Sending back to client: " + toClient);
-                    }
                     sendOutput(toClient);
-                    //ADDED
-                    if (DEBUG) {
-                        System.out.println("Sent back to client: " + toClient);
-                    }
                     break;
 
                 default: //Invalid requests

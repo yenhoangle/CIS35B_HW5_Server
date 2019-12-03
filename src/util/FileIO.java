@@ -1,3 +1,12 @@
+/*
+ * Yen Le
+ * 20123455
+ *
+ * FileIO.java
+ * Class which handles file input/output for the program. It contains methods to build an Automotive object from text
+ * and prop files
+ * */
+
 package util;
 import java.util.*;
 import java.io.*;
